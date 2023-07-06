@@ -27,7 +27,7 @@ jobs:
   deploy_to_production:
     runs-on: ubuntu-latest
     name: deploy to production with artifact
-    environment: AZURE_SPRING_APPS_ENVS
+    environment: Azure Spring Apps
     steps:
       - name: Checkout GitHub Action
         uses: actions/checkout@v2
@@ -41,7 +41,7 @@ jobs:
 
       - name: maven build, clean
         run: |
-          mvn clean package
+          mvn clean package -DskipTests -T 4 -ntp
 
       - name: Login via Azure CLI
         uses: azure/login@v1
@@ -56,4 +56,4 @@ jobs:
           service-name: ${{ vars.AZURE_SPRING_APPS_SERVICE_NAME }}
           app-name: ${{ github.event.inputs.app-name }}
           use-staging-deployment: false
-          package: ${{ github.workspace }}/${{ github.event.inputs.directory }}/*.jar
+          package: ${{ github.workspace }}/${{ github.event.inputs.directory }}/target/*.jar
