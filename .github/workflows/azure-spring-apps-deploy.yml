@@ -1,4 +1,4 @@
-name: AzureSpringApps
+name: Deploy to Azure Spring Apps
 on: 
   workflow_dispatch:
     inputs:
@@ -40,6 +40,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+          cache: 'maven'
 
       - name: maven build, clean
         run: |
@@ -53,9 +54,9 @@ jobs:
       - name: deploy to production with artifact
         uses: azure/spring-apps-deploy@v1
         with:
-          azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
+          azure-subscription: ${{ vars.AZURE_SUBSCRIPTION }}
           action: Deploy
-          service-name: ${{ env.AZURE_SPRING_APPS_SERVICE_NAME }}
+          service-name: ${{ vars.AZURE_SPRING_APPS_SERVICE_NAME }}
           app-name: ${{ github.event.inputs.app-name }}
           use-staging-deployment: false
           package: ${{ env.ASC_PACKAGE_PATH }}/${{ github.event.inputs.directory }}/*.jar
