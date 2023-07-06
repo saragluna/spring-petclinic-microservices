@@ -1,36 +1,33 @@
-name: AzureSpringApps
-on: 
+name: Deploy to Azure Spring Apps
+on:
   workflow_dispatch:
     inputs:
       directory:
         type: choice
         description: Which directory to deploy
-        options: 
-        - spring-petclinic-admin-server
-        - spring-petclinic-api-gateway
-        - spring-petclinic-customers-service
-        - spring-petclinic-vets-service
-        - spring-petclinic-visits-service
+        options:
+          - spring-petclinic-admin-server
+          - spring-petclinic-api-gateway
+          - spring-petclinic-customers-service
+          - spring-petclinic-vets-service
+          - spring-petclinic-visits-service
         required: true
       app-name:
         type: choice
         description: The Azure Spring Apps app name
         options:
-        - admin-server
-        - api-gateway
-        - customers-service
-        - vets-service
-        - visits-service
+          - admin-server
+          - api-gateway
+          - customers-service
+          - vets-service
+          - visits-service
         required: true
-        
-  
-env:
-  ASC_PACKAGE_PATH: ${{ github.workspace }}
 
 jobs:
   deploy_to_production:
     runs-on: ubuntu-latest
     name: deploy to production with artifact
+    environment: AZURE_SPRING_APPS_ENVS
     steps:
       - name: Checkout GitHub Action
         uses: actions/checkout@v2
@@ -59,4 +56,4 @@ jobs:
           service-name: ${{ vars.AZURE_SPRING_APPS_SERVICE_NAME }}
           app-name: ${{ github.event.inputs.app-name }}
           use-staging-deployment: false
-          package: ${{ env.ASC_PACKAGE_PATH }}/${{ github.event.inputs.directory }}/*.jar
+          package: ${{ github.workspace }}/${{ github.event.inputs.directory }}/*.jar
