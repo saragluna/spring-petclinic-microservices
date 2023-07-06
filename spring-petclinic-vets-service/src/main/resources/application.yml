@@ -7,7 +7,13 @@ spring:
     cache-names: vets
   profiles:
     active: production
-
+logging:
+  file:
+    name: logs/vets-service.log
+management:
+  endpoint:
+    logfile:
+      external-file: logs/vets-service.log
 ---
 spring:
   config:
