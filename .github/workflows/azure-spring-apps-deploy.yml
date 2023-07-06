@@ -31,6 +31,7 @@ jobs:
   deploy_to_production:
     runs-on: ubuntu-latest
     name: deploy to production with artifact
+    environment: AZURE_SPRING_APPS_ENVS
     steps:
       - name: Checkout GitHub Action
         uses: actions/checkout@v2
