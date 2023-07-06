@@ -22,10 +22,6 @@ on:
         - vets-service
         - visits-service
         required: true
-        
-  
-env:
-  ASC_PACKAGE_PATH: ${{ github.workspace }}
 
 jobs:
   deploy_to_production:
@@ -60,4 +56,4 @@ jobs:
           service-name: ${{ vars.AZURE_SPRING_APPS_SERVICE_NAME }}
           app-name: ${{ github.event.inputs.app-name }}
           use-staging-deployment: false
-          package: ${{ env.ASC_PACKAGE_PATH }}/${{ github.event.inputs.directory }}/*.jar
+          package: ${{ github.workspace }}/${{ github.event.inputs.directory }}/*.jar
