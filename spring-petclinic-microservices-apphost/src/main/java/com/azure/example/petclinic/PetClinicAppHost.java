@@ -24,6 +24,7 @@ public class PetClinicAppHost implements DcpAppHost {
         SpringProject configServer = spring.addSpringProject("config-server")
                 .withPath("spring-petclinic-config-server")
                 .withHttpEndpoint(8888)
+                .withHttpsEndpoint(8888)
                 .withExternalHttpEndpoints();
 
         spring.addSpringProject("customers-service")
@@ -52,14 +53,20 @@ public class PetClinicAppHost implements DcpAppHost {
                 .withDependency(configServer)
                 .withDependency(discoveryServer)
                 .withEnvironment("SERVER_PORT", "8080")
-                .withReference(discoveryServer);
+                .withReference(discoveryServer)
+                .withHttpEndpoint(8080)
+                .withHttpsEndpoint(8080)
+                .withExternalHttpEndpoints();
 
         spring.addSpringProject("admin-server")
                 .withPath("spring-petclinic-admin-server")
                 .withDependency(configServer)
                 .withDependency(discoveryServer)
                 .withEnvironment("SERVER_PORT", "9090")
-                .withReference(discoveryServer);
+                .withReference(discoveryServer)
+                .withHttpEndpoint(9090)
+                .withHttpsEndpoint(9090)
+                .withExternalHttpEndpoints();
 
     }
 }
