@@ -7,6 +7,12 @@ spring:
     cache-names: vets
   profiles:
     active: production
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${services__eureka__https__0}/eureka/
+  instance:
+    preferIpAddress: true
 
 ---
 spring:

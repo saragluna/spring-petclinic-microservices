@@ -52,7 +52,9 @@ public class PetClinicAppHost implements DcpAppHost {
                 .withDependency(configServer)
                 .withDependency(discoveryServer)
                 .withEnvironment("SERVER_PORT", "8080")
-                .withReference(discoveryServer);
+                .withReference(discoveryServer)
+                .withHttpEndpoint(8080)
+                .withExternalHttpEndpoints();
 
         spring.addSpringProject("admin-server")
                 .withPath("spring-petclinic-admin-server")

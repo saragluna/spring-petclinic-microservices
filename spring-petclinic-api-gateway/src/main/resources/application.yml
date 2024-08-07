@@ -24,8 +24,12 @@ spring:
             - Path=/api/customer/**
           filters:
             - StripPrefix=2
-
-
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${services__eureka__https__0}/eureka/
+  instance:
+    preferIpAddress: true
 
 ---
 spring:

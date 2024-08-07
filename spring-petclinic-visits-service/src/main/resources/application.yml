@@ -3,7 +3,12 @@ spring:
     name: visits-service
   config:
     import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888/}
-
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${services__eureka__https__0}/eureka/
+  instance:
+    preferIpAddress: true
 
 ---
 spring:
