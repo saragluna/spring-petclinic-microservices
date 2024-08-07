@@ -19,3 +19,8 @@ target/
 
 # Branch switching
 generated/
+
+# App Host
+**/bin/**
+**/logs/**
+**/output/**
