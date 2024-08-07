@@ -26,3 +26,9 @@ generated/
 
 
 setup-env-variables-azure.sh
+
+# AZD
+.azure
+/spring-petclinic-frontend/npm-debug.log
+/spring-petclinic-frontend/public/
+/spring-petclinic-frontend/node_modules/
