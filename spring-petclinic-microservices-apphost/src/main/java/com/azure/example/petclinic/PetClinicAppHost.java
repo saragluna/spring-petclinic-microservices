@@ -19,7 +19,7 @@ public class PetClinicAppHost implements DcpAppHost {
         EurekaServiceDiscovery discoveryServer = spring
             .addEurekaServiceDiscovery("eureka");
         ConfigServerServiceDiscovery configServer = spring
-            .addConfigServerServiceDiscovery("config-server")
+            .addConfigServer("config-server")
             .withGitRepositoryPath("https://github.com/spring-petclinic/spring-petclinic-microservices-config")
             .withExternalHttpEndpoints();
 //        SpringProject configServer = spring.addSpringProject("spring-petclinic-config-server")
