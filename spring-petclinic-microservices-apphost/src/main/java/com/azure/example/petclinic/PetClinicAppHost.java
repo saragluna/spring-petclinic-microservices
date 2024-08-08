@@ -51,6 +51,7 @@ public class PetClinicAppHost implements DcpAppHost {
             .withReference(zipkinServer)
             .withReference(configServer)
             .withReference(discoveryServer)
+            .withHttpEndpoint(8080)
             .withExternalHttpEndpoints();
 
         spring.addSpringProject("admin-server")
@@ -58,6 +59,7 @@ public class PetClinicAppHost implements DcpAppHost {
             .withReference(zipkinServer)
             .withReference(configServer)
             .withReference(discoveryServer)
+            .withHttpEndpoint(9090)
             .withExternalHttpEndpoints();
 
     }
