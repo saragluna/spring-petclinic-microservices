@@ -2,9 +2,10 @@ package com.azure.example.petclinic;
 
 import com.azure.runtime.host.DistributedApplication;
 import com.azure.runtime.host.dcp.DcpAppHost;
+import com.azure.runtime.host.extensions.microservice.common.resources.ConfigServerService;
 import com.azure.runtime.host.extensions.microservice.common.resources.EurekaServiceDiscovery;
+import com.azure.runtime.host.extensions.microservice.common.resources.ZipkinServerService;
 import com.azure.runtime.host.extensions.spring.SpringExtension;
-import com.azure.runtime.host.extensions.spring.resources.SpringProject;
 
 public class PetClinicAppHost implements DcpAppHost {
 
@@ -15,58 +16,48 @@ public class PetClinicAppHost implements DcpAppHost {
     @Override
     public void configureApplication(DistributedApplication app) {
         app.printExtensions();
-
         SpringExtension spring = app.withExtension(SpringExtension.class);
-
         EurekaServiceDiscovery discoveryServer = spring
-                .addEurekaServiceDiscovery("eureka");
-
-        SpringProject configServer = spring.addSpringProject("config-server")
-                .withPath("spring-petclinic-config-server")
-                .withHttpEndpoint(8888)
-                .withHttpsEndpoint(8888)
-                .withExternalHttpEndpoints();
-
-        spring.addSpringProject("customers-service")
-                .withPath("spring-petclinic-customers-service")
-                .withDependency(configServer)
-                .withDependency(discoveryServer)
-                .withEnvironment("SERVER_PORT", "8081")
-                .withReference(discoveryServer);
-
-        spring.addSpringProject("vets-service")
-                .withPath("spring-petclinic-vets-service")
-                .withDependency(configServer)
-                .withDependency(discoveryServer)
-                .withEnvironment("SERVER_PORT", "8082")
-                .withReference(discoveryServer);
-
-        spring.addSpringProject("visits-service")
-                .withPath("spring-petclinic-visits-service")
-                .withDependency(configServer)
-                .withDependency(discoveryServer)
-                .withEnvironment("SERVER_PORT", "8083")
-                .withReference(discoveryServer);
-
-        spring.addSpringProject("api-gateway")
-                .withPath("spring-petclinic-api-gateway")
-                .withDependency(configServer)
-                .withDependency(discoveryServer)
-                .withEnvironment("SERVER_PORT", "8080")
-                .withReference(discoveryServer)
-                .withHttpEndpoint(8080)
-                .withHttpsEndpoint(8080)
-                .withExternalHttpEndpoints();
-
-        spring.addSpringProject("admin-server")
-                .withPath("spring-petclinic-admin-server")
-                .withDependency(configServer)
-                .withDependency(discoveryServer)
-                .withEnvironment("SERVER_PORT", "9090")
-                .withReference(discoveryServer)
-                .withHttpEndpoint(9090)
-                .withHttpsEndpoint(9090)
-                .withExternalHttpEndpoints();
-
+            .addEurekaServiceDiscovery("eureka");
+        ConfigServerService configServer = spring
+            .addConfigServer("config-server")
+            .withGitRepositoryPath("https://github.com/spring-petclinic/spring-petclinic-microservices-config")
+            .withExternalHttpEndpoints();
+        ZipkinServerService zipkinServer = spring
+            .addZipkinServer("zipkin-server")
+            .withExternalHttpEndpoints();
+//        SpringProject configServer = spring.addSpringProject("spring-petclinic-config-server")
+//                .withExternalHttpEndpoints();
+        spring.addSpringProject("spring-petclinic-customers-service")
+              .withDependency(zipkinServer)
+              .withDependency(discoveryServer)
+              .withDependency(configServer)
+              .withReference(configServer)
+              .withReference(discoveryServer);
+        spring.addSpringProject("spring-petclinic-vets-service")
+              .withDependency(zipkinServer)
+              .withDependency(discoveryServer)
+              .withDependency(configServer)
+              .withReference(configServer)
+              .withReference(discoveryServer);
+        spring.addSpringProject("spring-petclinic-visits-service")
+              .withDependency(zipkinServer)
+              .withDependency(discoveryServer)
+              .withDependency(configServer)
+              .withReference(configServer)
+              .withReference(discoveryServer);
+        spring.addSpringProject("spring-petclinic-api-gateway")
+              .withDependency(zipkinServer)
+              .withDependency(discoveryServer)
+              .withDependency(configServer)
+              .withReference(configServer)
+              .withReference(discoveryServer)
+              .withExternalHttpEndpoints();
+        spring.addSpringProject("spring-petclinic-admin-server")
+              .withDependency(discoveryServer)
+              .withDependency(configServer)
+              .withReference(configServer)
+              .withReference(discoveryServer)
+              .withExternalHttpEndpoints();
     }
 }
