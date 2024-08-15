@@ -5,7 +5,7 @@ import com.azure.runtime.host.dcp.DcpAppHost;
 import com.azure.runtime.host.extensions.microservice.common.resources.ConfigServerService;
 import com.azure.runtime.host.extensions.microservice.common.resources.ZipkinServerService;
 import com.azure.runtime.host.extensions.spring.SpringExtension;
-import com.azure.runtime.host.resources.JavaComponentEurekaServerForSpring;
+import com.azure.runtime.host.resources.AzureContainerAppsJavaComponentEureka;
 
 public class PetClinicAppHost implements DcpAppHost {
 
@@ -18,8 +18,8 @@ public class PetClinicAppHost implements DcpAppHost {
         app.printExtensions();
         SpringExtension spring = app.withExtension(SpringExtension.class);
 
-        JavaComponentEurekaServerForSpring discoveryServer = spring
-            .addJavaComponentEurekaServerForSpring("eureka");
+        AzureContainerAppsJavaComponentEureka discoveryServer = spring
+            .addAzureContainerAppsJavaComponentEureka("eureka");
 
         ConfigServerService configServer = spring
             .addConfigServer("config-server")
